@@ -1,0 +1,31 @@
+name: weekly-competitor-snapshot
+
+on:
+  schedule:
+    - cron: '0 23 * * 6'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  snapshot:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install google-play-scraper
+      - run: |
+          if ls snapshots/*.json >/dev/null 2>&1; then
+            python competitor_monitor.py --config apps.json --quiet
+          else
+            python competitor_monitor.py --config apps.json --init --quiet
+          fi
+      - run: |
+          git config user.name "competitor-monitor"
+          git config user.email "competitor-monitor@users.noreply.github.com"
+          git add snapshots reports
+          git commit -m "snapshot $(TZ=Asia/Seoul date +%F)" || echo "no changes"
+          git push
