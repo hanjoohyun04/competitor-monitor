@@ -1,0 +1,140 @@
+{
+  "country": "kr",
+  "apps": [
+    {
+      "name": "그루머노트",
+      "ios": 1580697862,
+      "gp": null
+    },
+    {
+      "name": "다이얼독 비즈",
+      "ios": 6445974977,
+      "gp": null,
+      "self": true
+    },
+    {
+      "name": "다이얼독 회원용",
+      "ios": 1598230149,
+      "gp": null,
+      "self": true
+    },
+    {
+      "name": "똑독",
+      "ios": 6754978978,
+      "gp": "net.knockdog.petcampus.v2"
+    },
+    {
+      "name": "멍텔모아",
+      "ios": 6755710326,
+      "gp": "com.knowledgeware.modelexecutor80.dogtellmoa_2377993759"
+    },
+    {
+      "name": "멍투데이",
+      "ios": 6748244494,
+      "gp": null
+    },
+    {
+      "name": "멍투데이 비즈니스",
+      "ios": 6748244482,
+      "gp": null
+    },
+    {
+      "name": "반비서 고객용",
+      "ios": 6740599562,
+      "gp": null
+    },
+    {
+      "name": "반짝 미용파트너",
+      "ios": 1605723210,
+      "gp": "com.banjjakpet.beautypartner",
+      "low": true
+    },
+    {
+      "name": "우주펫",
+      "ios": 1597844235,
+      "gp": "com.universepet.universepet"
+    },
+    {
+      "name": "우주펫파트너",
+      "ios": 6673888931,
+      "gp": "com.universepet.universepetPartners.universepet_partners"
+    },
+    {
+      "name": "키즈노트",
+      "ios": 527574743,
+      "gp": "com.vaultmicro.kidsnote",
+      "low": true
+    },
+    {
+      "name": "티피매니저",
+      "ios": 1639964013,
+      "gp": "com.fridgecrew.labrador.mobile.webapp"
+    },
+    {
+      "name": "펫차트",
+      "ios": 6746713028,
+      "gp": null
+    },
+    {
+      "name": "포들리 파트너스",
+      "ios": 1609215721,
+      "gp": null,
+      "low": true
+    },
+    {
+      "name": "헬로티피",
+      "ios": 1671905384,
+      "gp": "com.teepee.guardian"
+    }
+  ],
+  "pages": [
+    {
+      "name": "그루머노트 홈",
+      "url": "https://groomernote.com/"
+    },
+    {
+      "name": "그루머노트 요금제",
+      "url": "https://groomernote.com/pricing"
+    },
+    {
+      "name": "똑독 홈",
+      "url": "https://home.knockdog.net/"
+    },
+    {
+      "name": "멍텔모아 파트너",
+      "url": "https://mungtelmoa.com/partner"
+    },
+    {
+      "name": "멍투데이 홈",
+      "url": "https://mungtoday.com/"
+    },
+    {
+      "name": "반비서 홈",
+      "url": "https://banbiseo.com/"
+    },
+    {
+      "name": "우주펫 파트너",
+      "url": "https://www.spacepet.site/partner"
+    },
+    {
+      "name": "키즈노트 애견유치원",
+      "url": "https://www.with-kidsnote.com/updatenotedog"
+    },
+    {
+      "name": "티피 홈",
+      "url": "https://teepee.co.kr/"
+    },
+    {
+      "name": "티피 소개(우피)",
+      "url": "https://teepee.oopy.io/"
+    },
+    {
+      "name": "펫차트 공지",
+      "url": "https://www.petchart.kr/page/notice.html"
+    },
+    {
+      "name": "펫차트 요금",
+      "url": "https://www.petchart.kr/page/cost.html"
+    }
+  ]
+}
