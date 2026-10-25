@@ -117,34 +117,69 @@ def _extract_json_array(text, start_idx):
     return None
 
 
+def _walk_find_history(obj, out):
+    """JSON 트리에서 versionDisplay 항목을 가진 versionHistory 배열을 전부 찾는다."""
+    if isinstance(obj, dict):
+        for k, v in obj.items():
+            if k == "versionHistory" and isinstance(v, list) and v and isinstance(v[0], dict) and "versionDisplay" in v[0]:
+                out.append(v)
+            else:
+                _walk_find_history(v, out)
+    elif isinstance(obj, list):
+        for v in obj:
+            _walk_find_history(v, out)
+
+
 def appstore_version_history(app_id, country):
     """스토어 페이지에 묻힌 버전 기록(최근 25개 안팎)을 best-effort로 파싱. 실패하면 None."""
     try:
         page = http_get("https://apps.apple.com/%s/app/id%s" % (country, app_id)).decode("utf-8", "ignore")
-    except Exception as e:  # noqa
+    except Exception:  # noqa
         return None
-    candidates = [page, page.replace('\\"', '"').replace("\\\\", "\\")]
-    for text in candidates:
-        for m in re.finditer(r'"versionHistory"\s*:\s*\[', text):
-            arr = _extract_json_array(text, m.end() - 1)
-            if not arr:
-                continue
-            try:
-                items = json.loads(arr)
-            except Exception:
-                continue
-            hist = []
-            for it in items:
-                if not isinstance(it, dict):
-                    continue
-                hist.append({
-                    "version": it.get("versionDisplay") or it.get("version"),
-                    "date": (it.get("releaseDate") or "")[:10],
-                    "notes": (it.get("releaseNotes") or "").strip(),
-                })
-            if hist:
-                return hist
-    return None
+    found = []
+    # 1) <script type="application/json" ...> 와 fastboot/shoebox 스크립트의 JSON을 전부 해석
+    for m in re.finditer(r'<script[^>]+type="(?:application/json|fastboot/shoebox)"[^>]*>(.*?)</script>', page, flags=re.S):
+        raw = html.unescape(m.group(1).strip())
+        try:
+            obj = json.loads(raw)
+        except Exception:
+            continue
+        # shoebox: {url: "<json string>"} 형태 → 문자열 값은 한 번 더 해석
+        if isinstance(obj, dict):
+            for k, v in list(obj.items()):
+                if isinstance(v, str) and v[:1] in "{[":
+                    try:
+                        obj[k] = json.loads(v)
+                    except Exception:
+                        pass
+        _walk_find_history(obj, found)
+        if found:
+            break
+    # 2) 그래도 없으면 텍스트에서 직접 배열을 잘라낸다
+    if not found:
+        for text in (page, page.replace('\\"', '"').replace("\\\\", "\\")):
+            for m in re.finditer(r'"versionHistory"\s*:\s*\[', text):
+                arr = _extract_json_array(text, m.end() - 1)
+                if arr:
+                    try:
+                        items = json.loads(arr)
+                        if items and isinstance(items[0], dict):
+                            found.append(items)
+                            break
+                    except Exception:
+                        continue
+            if found:
+                break
+    if not found:
+        return None
+    hist = []
+    for it in found[0]:
+        hist.append({
+            "version": it.get("versionDisplay") or it.get("version"),
+            "date": (it.get("releaseDate") or it.get("releaseTimestamp") or "")[:10],
+            "notes": (it.get("releaseNotes") or "").strip(),
+        })
+    return hist or None
 
 
 def gp_info(pkg, country):
@@ -157,8 +192,10 @@ def gp_info(pkg, country):
     except Exception as e:  # noqa
         return {"error": "%s: %s" % (type(e).__name__, e)}
     updated = d.get("updated")
-    if isinstance(updated, (int, float)):
+    if isinstance(updated, (int, float)) and updated > 0:
         updated = dt.datetime.fromtimestamp(updated, KST).strftime("%Y-%m-%d")
+    elif d.get("lastUpdatedOn"):
+        updated = d.get("lastUpdatedOn")
     return {
         "title": d.get("title"), "version": d.get("version"), "updated": updated,
         "installs": d.get("installs"), "realInstalls": d.get("realInstalls"),
@@ -231,7 +268,8 @@ def collect(cfg, log):
 def fmt_rating(d):
     if not d:
         return "-"
-    return "%s(%s)" % (d.get("rating"), d.get("ratingCount"))
+    r = d.get("rating")
+    return "%s(%s)" % (("%.1f" % r) if isinstance(r, (int, float)) else r, d.get("ratingCount"))
 
 
 def text_diff(old, new, limit=40):
