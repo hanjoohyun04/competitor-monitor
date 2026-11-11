@@ -9,13 +9,13 @@
     {
       "name": "다이얼독 비즈",
       "ios": 6445974977,
-      "gp": null,
+      "gp": "com.kickcrab.mail",
       "self": true
     },
     {
       "name": "다이얼독 회원용",
       "ios": 1598230149,
-      "gp": null,
+      "gp": "com.kickcrab.com.mail",
       "self": true
     },
     {
@@ -47,6 +47,27 @@
       "name": "반짝 미용파트너",
       "ios": 1605723210,
       "gp": "com.banjjakpet.beautypartner",
+      "low": true
+    },
+    {
+      "name": "왈왈노트",
+      "ios": 6760805131,
+      "gp": null
+    },
+    {
+      "name": "왈왈노트 드라이버",
+      "ios": 6764229788,
+      "gp": "kr.walwalnote.driver"
+    },
+    {
+      "name": "왈왈노트 매니저",
+      "ios": 6760805084,
+      "gp": null
+    },
+    {
+      "name": "왈왈웍스",
+      "ios": 6786092352,
+      "gp": null,
       "low": true
     },
     {
@@ -113,8 +134,20 @@
       "url": "https://banbiseo.com/"
     },
     {
+      "name": "왈 (보류 후보)",
+      "url": "https://waal.kr/"
+    },
+    {
+      "name": "왈왈노트 웹",
+      "url": "https://app.walwalnote.kr/"
+    },
+    {
       "name": "우주펫 파트너",
       "url": "https://www.spacepet.site/partner"
+    },
+    {
+      "name": "위드왈왈 홈",
+      "url": "https://withwalwal.kr/"
     },
     {
       "name": "키즈노트 애견유치원",
